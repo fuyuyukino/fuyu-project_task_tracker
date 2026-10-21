@@ -9,15 +9,19 @@ DATA_FILE = "cli_data.json"
 
 # Load JSON data
 def load():
-    # Load existing data or initilize on empty list
+    # Load existing data or initialize on empty list
     if os.path.exists(DATA_FILE) and os.path.getsize(DATA_FILE) > 0:
         with open(DATA_FILE, "r") as f:
             try:
                 return json.load(f)
             except json.JSONDecodeError:
                 return []
-    else:
-        return []
+    return []
+
+# Save JSON data
+def save(data):
+    with open(DATA_FILE, "w") as file:
+        json.dump(data, file, indent=4)
 
 # Functionality to add
 def add(adding_input):
@@ -29,15 +33,13 @@ def add(adding_input):
         "id": next_id,
         "task": adding_input,
         "status": "todo",
-        "createdAt": datetime.now().isoformat(),
-        "updatedAt": datetime.now().isoformat()
+        "createdAt": datetime.now().strftime("%d-%m-%Y %H:%M:%S"),
+        "updatedAt": datetime.now().strftime("%d-%m-%Y %H:%M:%S")
     }
 
     # Write into JSON file
     data.append(entry)
-    with open(DATA_FILE, "w") as file:
-        json.dump(data, file, indent=4)
-
+    save(data)
     print(f"Task added successfully (ID: {next_id})")
 
 
@@ -112,11 +114,10 @@ def update(id_input, text_input):
         update_task.update(
             {
                 "task": text_input,
-                "updatedAt": datetime.now().isoformat()
+                "updatedAt": datetime.now().strftime("%d-%m-%Y %H:%M:%S")
             }
         )
-        with open(DATA_FILE, "w") as file:
-            json.dump(data, file, indent=4)
+        save(data)
         print(f"Task updated successfully (ID: {id_input})")
 
     else:
@@ -132,9 +133,7 @@ def delete(id_input):
         return
 
     deleted_task = [task for task in data if task.get("id") != id_input]
-
-    with open(DATA_FILE, "w") as file:
-        json.dump(deleted_task, file, indent=4)
+    save(deleted_task)
     print(f"Task deleted successfully (ID: {id_input})")
 
 
@@ -149,8 +148,7 @@ def mark_inprogress(id_input):
                 "status": "in-progress"
             }
         )
-        with open(DATA_FILE, "w") as file:
-            json.dump(data, file, indent=4)
+        save(data)
         print(f"Task marked to in-progress (ID: {id_input})")
     
     else:
@@ -167,8 +165,7 @@ def mark_done(id_input):
                 "status": "done"
             }
         )
-        with open(DATA_FILE, "w") as file:
-            json.dump(data, file, indent=4)
+        save(data)
         print(f"Task marked to done (ID: {id_input})")
     
     else:
@@ -178,7 +175,7 @@ def mark_done(id_input):
 
 def main(): 
     # Set up CLI argument parsing
-    parser = argparse.ArgumentParser(prog="task-cli", description="Begin to manipulate data in task track")
+    parser = argparse.ArgumentParser(prog="task-cli", description="Task Tracker Command Line Interface")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     # Add command
