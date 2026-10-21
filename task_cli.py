@@ -116,7 +116,7 @@ def update(id_input, text_input):
             }
         )
         with open(DATA_FILE, "w") as file:
-            json.dump(update_task, file, indent=4)
+            json.dump(data, file, indent=4)
         print(f"Task updated successfully (ID: {id_input})")
 
     else:
@@ -126,6 +126,10 @@ def update(id_input, text_input):
 # Functionality to delete
 def delete(id_input):
     data = load()
+    list_task = next((task for task in data if task["id"] == id_input), None)
+    if not list_task:
+        print("Id not found")
+        return
 
     deleted_task = [task for task in data if task.get("id") != id_input]
 
@@ -146,7 +150,7 @@ def mark_inprogress(id_input):
             }
         )
         with open(DATA_FILE, "w") as file:
-            json.dump(update_task, file, indent=4)
+            json.dump(data, file, indent=4)
         print(f"Task marked to in-progress (ID: {id_input})")
     
     else:
@@ -164,7 +168,7 @@ def mark_done(id_input):
             }
         )
         with open(DATA_FILE, "w") as file:
-            json.dump(update_task, file, indent=4)
+            json.dump(data, file, indent=4)
         print(f"Task marked to done (ID: {id_input})")
     
     else:
@@ -174,7 +178,7 @@ def mark_done(id_input):
 
 def main(): 
     # Set up CLI argument parsing
-    parser = argparse.ArgumentParser(description="Begin to manipulate data in task track")
+    parser = argparse.ArgumentParser(prog="task-cli", description="Begin to manipulate data in task track")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     # Add command
@@ -182,7 +186,7 @@ def main():
     add_parser.add_argument("text", type=str, help="Input task into JSON file")
 
     # List command
-    list_parser = subparsers.add_parser("list", help="List all items in task dictionary")
+    list_parser = subparsers.add_parser("list", help="List items in task dictionary")
     list_subparsers = list_parser.add_subparsers(dest="list_format", required=True)
 
     # List command handles all

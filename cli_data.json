@@ -1,16 +1,16 @@
 [
     {
         "id": 1,
-        "task": "Sleeping at 10AM",
-        "status": "todo",
-        "createdAt": "2026-10-20T22:18:58.768878",
-        "updatedAt": "2026-10-20T23:27:04.297461"
+        "task": "Wake up at 4AM",
+        "status": "done",
+        "createdAt": "2026-10-21T14:57:34.760863",
+        "updatedAt": "2026-10-21T15:00:34.520082"
     },
     {
         "id": 2,
-        "task": "Napping from 12PM to 1PM",
-        "status": "todo",
-        "createdAt": "2026-10-20T22:19:10.943983",
-        "updatedAt": "2026-10-20T22:19:10.944011"
+        "task": "Take a bath at 6AM",
+        "status": "in-progress",
+        "createdAt": "2026-10-21T15:06:40.980018",
+        "updatedAt": "2026-10-21T15:07:02.621898"
     }
 ]
